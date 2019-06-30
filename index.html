@@ -10,34 +10,59 @@
       Hello World
     </div>
   </div>
-  <div lj-type="stage">
-  <!--  Define a single stage.  -->
-  <!--  Define the layer "slider" for the slides.  -->
-  <!--  The default frame is "frame1" -->
-  <div lj-type="layer" lj-name="slider" lj-default-frame="frame1" lj-native-scroll="false">
-    <!--  Define one frame per slide.  -->
-    <!--  lj-fit-to="cover" will make sure that the stage will be fully filled with the frame.  -->
-    <!--  "neighbors.l"/"r" define which frames will be transitioned to upon left/right swipe gestures. -->
-    <div lj-type="frame" lj-name="frame1" lj-fit-to="cover" lj-no-scrolling="true" lj-start-position="center" lj-neighbors.r="frame2">
-      <img src="https://cdn.layerjs.org/examples/slider/img/samples1a.png">
+  <!-- Add a main stage. -->
+<div lj-type="stage" id="mainstage">
+  <!-- The layer for the zoom menu. By default the zoomed out state is shown. -->
+  <div lj-type="layer" lj-default-frame="zoomout" lj-layout="canvas">
+    <!-- The frame showing everything in the zoomed out state -->
+    <div lj-type="frame" id="zoomout" lj-fit-to="fixed">
+      <h1>Abitrage Ipsum Momentum</h1>
+      <h2>Beware of the Little White Rabbit</h2>
+      <p>
+        Click on one of the content frames below to get the details. Swipe to switch between them. Use the menu icon in the frames to get back to the main menu.
+      </p>
     </div>
-    <div lj-type="frame" lj-name="frame2" lj-fit-to="cover" lj-no-scrolling="true" lj-start-position="center" lj-neighbors.l="frame1" lj-neighbors.r="frame3">
-      <img src="https://cdn.layerjs.org/examples/slider/img/samples1b.png">
-    </div>
-    <div lj-type="frame" lj-name="frame3" lj-fit-to="cover" lj-no-scrolling="true" lj-start-position="center" lj-neighbors.l="frame2">
-      <img src="https://cdn.layerjs.org/examples/slider/img/samples1c.png">
+    <!-- The zoomed in frame only showing the current content frame, position is set in CSS but scale must be set with lj-scale, as css transform will be overwritten by layerJS -->
+    <div lj-type="frame" id="zoomin" lj-fit-to="fixed" lj-scale="0.25">
+      <!-- The stage that handles the transitions between the content frames -->
+      <div lj-type="stage" id="contentstage">
+        <!-- The layer for the content frames -->
+        <div lj-type="layer" id="contentlayer" lj-layout="canvas" lj-native-scroll="false">
+          <!-- 1st content frame. -->
+          <!-- Note: swiping left/right in zoomed in state is not working because the iframe will swallow the mouse event. See https://cdn.layerjs.org/examples/zoom-noiframe/index.html for an example w/o iframes-->
+          <div lj-type="frame" id="frame1" lj-fit-to="responsive" lj-neighbors.r="frame2">
+            <a class="coverlink" href="#frame1;zoomin;minimenu.hamburger"></a>
+            <!-- an overlay linking to the zoomed in state, to frame1 in the inner layer and to the hamburger menu in the minimenu layer -->
+            <iframe width="100%" height="100%" frameborder="0" src="demografia.html"></iframe>
+            <!-- We use an external iframe to not clutter this example with content. -->
+          </div>
+          <!-- the next content frame -->
+          <div lj-type="frame" id="frame2" lj-fit-to="responsive" lj-neighbors.r="frame3" lj-neighbors.l="frame1">
+            <a class="coverlink" href="#frame2;zoomin;minimenu.hamburger"></a>
+            <iframe width="100%" height="100%" frameborder="0" src="ekonomia.html"></iframe>
+          </div>
+          <div lj-type="frame" id="frame3" lj-fit-to="responsive" lj-neighbors.r="frame4" lj-neighbors.l="frame2">
+            <a class="coverlink" href="#frame3;zoomin;minimenu.hamburger"></a>
+            <iframe width="100%" height="100%" frameborder="0" src="http://www.szychtawdanych.pl"></iframe>
+          </div>
+          <div lj-type="frame" id="frame4" lj-fit-to="responsive" lj-neighbors.l="frame3">
+            <a class="coverlink" href="#frame4;zoomin;minimenu.hamburger"></a>
+            <iframe width="100%" height="100%" frameborder="0" src="https://techcrunch.com/2017/04/03/statcounter-android-windows/amp/"></iframe>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <!--  A second layer for the controls -->
-  <div lj-type="layer" lj-native-scroll="false" id="arrows">
-    <!--  The control frame. The frame will be centered in the stage. -->
-    <div lj-type="frame" lj-fit-to="width" lj-start-position="center" lj-no-scrolling="true">
-      <!--  the link will trigger the transition to the previous frame of the currently active frame in layer "slider". -->
-      <a class="btn-left btn" href="#slider.!left&p=right">&lt;</a>
-      <a class="btn-right btn" href="#slider.!right&p=left">&gt;</a>
-    </div>
+  <div lj-type="layer" id="minimenu" lj-default-frame="!none" lj-native-scroll="false">
+    <!-- the layer for the hamburger menu. It's not shown by default -->
+    <a href="#zoomout;frame1;minimenu.!none" lj-type="frame" id="hamburger" lj-start-position="top" lj-fit-to="fixed" lj-transition="down">
+      <!-- the "hamburger" linking to the zoomed out state with the hamburger not shown. -->
+      &#x2630;
+    </a>
   </div>
 </div>
 
+
 </body>
 </html>
+
